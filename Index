@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MONEY³ — THORE India</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;0,9..144,900;1,9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep:#0A1830;
+    --navy-panel:#10233F;
+    --navy-panel-2:#173257;
+    --navy-line: rgba(232,184,75,0.16);
+    --gold:#E8B84B;
+    --gold-bright:#F5D06F;
+    --gold-dim: rgba(232,184,75,0.35);
+    --emerald:#3FA66E;
+    --rose:#D9695F;
+    --ink:#EDEFF3;
+    --ink-dim:#93A3BE;
+    --ink-faint:#5D6E8C;
+    --display: 'Fraunces', serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(232,184,75,0.10), transparent 60%),
+      var(--navy-deep);
+    color:var(--ink);
+    font-family:var(--body);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:80px;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--gold); color:var(--navy-deep);}
+
+  /* ---------- header ---------- */
+  header{
+    text-align:center;
+    padding:56px 20px 28px;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    letter-spacing:.28em;
+    font-size:11px;
+    color:var(--gold);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  h1.logo{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:clamp(48px,9vw,88px);
+    margin:0;
+    letter-spacing:-0.01em;
+    background:linear-gradient(180deg,var(--gold-bright), var(--gold) 55%, #b8873a);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    line-height:1;
+  }
+  .tagline{
+    font-family:var(--display);
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(15px,2.4vw,20px);
+    color:var(--ink-dim);
+    margin-top:10px;
+  }
+
+  /* ---------- money box hero ---------- */
+  .hero{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px 20px 10px;
+    position:relative;
+  }
+  .jar-wrap{
+    position:relative;
+    width:min(300px, 78vw);
+    height:400px;
+  }
+  .jar{
+    position:absolute;
+    inset:0;
+    border-radius:26px 26px 40px 40px;
+    border:2px solid rgba(232,184,75,0.55);
+    background:linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01) 40%, rgba(0,0,0,0.15));
+    box-shadow:
+      inset 0 0 40px rgba(232,184,75,0.06),
+      inset 0 2px 0 rgba(255,255,255,0.15),
+      0 30px 60px -20px rgba(0,0,0,0.6);
+    overflow:hidden;
+    backdrop-filter:blur(1px);
+  }
+  .jar-neck{
+    position:absolute;
+    top:-16px; left:50%;
+    transform:translateX(-50%);
+    width:46%;
+    height:24px;
+    border-radius:10px 10px 0 0;
+    border:2px solid rgba(232,184,75,0.55);
+    border-bottom:none;
+    background:linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.01));
+  }
+  .liquid{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:2%;
+    background:
+      linear-gradient(180deg, var(--gold-bright), var(--gold) 40%, #9c7127);
+    transition:height 1.4s cubic-bezier(.22,.9,.32,1);
+    box-shadow: inset 0 10px 30px rgba(255,255,255,0.25);
+  }
+  .liquid::before{
+    content:'';
+    position:absolute;
+    top:-6px; left:0; right:0; height:14px;
+    background:repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 18px, transparent 18px 36px);
+    opacity:.5;
+    border-radius:50%;
+  }
+  .jar-glare{
+    position:absolute;
+    top:6%; left:12%;
+    width:14%; height:70%;
+    background:linear-gradient(180deg, rgba(255,255,255,0.22), transparent 70%);
+    border-radius:50%;
+    filter:blur(4px);
+    pointer-events:none;
+  }
+  .jar-etch{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    pointer-events:none;
+    padding:0 18px;
+    mix-blend-mode:overlay;
+  }
+  .jar-readout{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    pointer-events:none;
+    padding:0 18px;
+  }
+  .jar-target-label{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.2em;
+    color:rgba(255,255,255,0.55);
+    text-transform:uppercase;
+  }
+  .jar-target-val{
+    font-family:var(--display);
+    font-weight:600;
+    font-style:italic;
+    font-size:15px;
+    color:rgba(255,255,255,0.7);
+    margin-top:2px;
+  }
+  .jar-achieved{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:clamp(30px,7vw,40px);
+    color:#1c1406;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+    margin-top:14px;
+    line-height:1;
+  }
+  .jar-achieved.low{ color:var(--ink); text-shadow:none; }
+  .jar-pct{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:15px;
+    margin-top:8px;
+    padding:3px 12px;
+    border-radius:20px;
+    background:rgba(0,0,0,0.25);
+    color:var(--gold-bright);
+    border:1px solid rgba(255,255,255,0.15);
+  }
+  .coin{
+    position:absolute;
+    top:-24px;
+    width:16px; height:16px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 55%, #8a6420);
+    box-shadow:0 0 6px rgba(232,184,75,0.6);
+    font-family:var(--mono);
+    font-size:9px;
+    color:#4a3510;
+    display:flex; align-items:center; justify-content:center;
+    animation-name:drop;
+    animation-timing-function:cubic-bezier(.5,0,.85,1);
+    z-index:5;
+  }
+  @keyframes drop{
+    from{ transform:translateY(0) rotate(0deg); opacity:1;}
+    to{ transform:translateY(420px) rotate(240deg); opacity:0.9;}
+  }
+  .hero-caption{
+    margin-top:22px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-faint);
+    text-align:center;
+  }
+  .hero-caption b{ color:var(--gold); font-weight:600; }
+
+  /* ---------- ticker strip ---------- */
+  .ticker{
+    max-width:1000px;
+    margin:34px auto 0;
+    padding:0 20px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .badge{
+    font-family:var(--mono);
+    font-size:12px;
+    padding:8px 16px;
+    border-radius:30px;
+    border:1px solid var(--navy-line);
+    background:var(--navy-panel);
+    display:flex; align-items:center; gap:8px;
+    color:var(--ink-dim);
+  }
+  .badge .dot{ width:6px; height:6px; border-radius:50%; background:var(--emerald);}
+  .badge.gold{ border-color:var(--gold-dim); color:var(--gold-bright);}
+  .badge.gold .dot{ background:var(--gold);}
+
+  /* ---------- sections ---------- */
+  section{
+    max-width:1100px;
+    margin:70px auto 0;
+    padding:0 20px;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:22px;
+    border-bottom:1px solid var(--navy-line);
+    padding-bottom:14px;
+  }
+  .section-head h2{
+    font-family:var(--display);
+    font-weight:650;
+    font-size:26px;
+    margin:0;
+  }
+  .section-head .sub{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+    letter-spacing:.14em;
+  }
+
+  /* pool grid */
+  .pool-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px,1fr));
+    gap:16px;
+  }
+  .pool-card{
+    background:var(--navy-panel);
+    border:1px solid var(--navy-line);
+    border-radius:14px;
+    padding:18px 18px 16px;
+    cursor:pointer;
+    transition:transform .18s ease, border-color .18s ease, background .18s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .pool-card:hover{
+    transform:translateY(-3px);
+    border-color:var(--gold-dim);
+    background:var(--navy-panel-2);
+  }
+  .pool-card .region{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+  }
+  .pool-card .dev{
+    font-family:var(--display);
+    font-weight:650;
+    font-size:19px;
+    margin-top:3px;
+    color:var(--ink);
+  }
+  .pool-bar-track{
+    margin-top:14px;
+    height:8px;
+    border-radius:6px;
+    background:rgba(255,255,255,0.06);
+    overflow:hidden;
+  }
+  .pool-bar-fill{
+    height:100%;
+    border-radius:6px;
+    background:linear-gradient(90deg, var(--gold) , var(--gold-bright));
+    transition:width 1s ease;
+  }
+  .pool-bar-fill.done{ background:linear-gradient(90deg, var(--emerald), #6bd39a); }
+  .pool-nums{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-dim);
+  }
+  .pool-nums .pct{ color:var(--gold-bright); font-weight:600;}
+  .pool-flags{ margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;}
+  .flag{
+    font-size:10px;
+    font-family:var(--mono);
+    padding:3px 8px;
+    border-radius:20px;
+    background:rgba(232,184,75,0.12);
+    color:var(--gold-bright);
+    border:1px solid var(--gold-dim);
+  }
+  .flag.done{ background:rgba(63,166,110,0.14); color:#7fe0ab; border-color:rgba(63,166,110,0.4); }
+  .flag.legend{ background:rgba(217,105,95,0.14); color:#f0958c; border-color:rgba(217,105,95,0.4); }
+
+  /* team tracker */
+  .team-row{
+    background:var(--navy-panel);
+    border:1px solid var(--navy-line);
+    border-radius:12px;
+    padding:14px 18px;
+    margin-bottom:10px;
+    cursor:pointer;
+  }
+  .team-row .top{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+  }
+  .team-row .name{
+    font-family:var(--display);
+    font-weight:650;
+    font-size:16px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .team-row .rev{
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--gold-bright);
+  }
+  .team-bar-track{
+    margin-top:10px;
+    height:6px;
+    border-radius:6px;
+    background:rgba(255,255,255,0.06);
+  }
+  .team-bar-fill{
+    height:100%;
+    border-radius:6px;
+    background:linear-gradient(90deg, var(--gold), var(--gold-bright));
+    transition:width 1s ease;
+  }
+  .team-members{
+    display:none;
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--navy-line);
+  }
+  .team-members.open{ display:block; }
+  .member-line{
+    display:flex; justify-content:space-between;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-dim);
+    padding:4px 0;
+  }
+
+  /* individual tracker */
+  .search-wrap{ margin-bottom:18px; }
+  #searchInput{
+    width:100%;
+    padding:12px 16px;
+    background:var(--navy-panel);
+    border:1px solid var(--navy-line);
+    border-radius:10px;
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:14px;
+  }
+  #searchInput:focus{ outline:none; border-color:var(--gold-dim); }
+  .indiv-list{ display:flex; flex-direction:column; gap:8px; }
+  .indiv-row{
+    background:var(--navy-panel);
+    border:1px solid var(--navy-line);
+    border-radius:10px;
+    padding:12px 16px;
+    cursor:pointer;
+  }
+  .indiv-row .top{ display:flex; justify-content:space-between; align-items:center; gap:10px;}
+  .indiv-row .name{ font-family:var(--body); font-weight:600; font-size:14px;}
+  .indiv-row .meta{ font-family:var(--mono); font-size:10px; color:var(--ink-faint); margin-top:2px;}
+  .indiv-row .rev{ font-family:var(--mono); font-size:13px; color:var(--gold-bright); }
+  .indiv-detail{
+    display:none;
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px dashed var(--navy-line);
+  }
+  .indiv-detail.open{ display:block; }
+  .indiv-pool-line{
+    display:flex; justify-content:space-between;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-dim);
+    padding:5px 0;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+  }
+  .indiv-pool-line .p-name{ color:var(--ink);}
+  .empty-note{
+    font-family:var(--mono); font-size:12px; color:var(--ink-faint); text-align:center; padding:30px 0;
+  }
+
+  /* modal */
+  .modal-backdrop{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(4,10,22,0.72);
+    backdrop-filter:blur(3px);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .modal-backdrop.open{ display:flex; }
+  .modal{
+    background:var(--navy-panel);
+    border:1px solid var(--gold-dim);
+    border-radius:16px;
+    max-width:640px;
+    width:100%;
+    max-height:82vh;
+    overflow-y:auto;
+    padding:26px 26px 20px;
+  }
+  .modal-head{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;}
+  .modal-head h3{ font-family:var(--display); font-weight:650; font-size:22px; margin:0;}
+  .modal-close{
+    background:none; border:none; color:var(--ink-dim); font-size:22px; cursor:pointer; line-height:1;
+  }
+  .modal-sub{ font-family:var(--mono); font-size:11px; color:var(--ink-faint); margin-bottom:18px;}
+  table.contrib{ width:100%; border-collapse:collapse; font-size:12px; font-family:var(--mono);}
+  table.contrib th{
+    text-align:left; color:var(--ink-faint); font-weight:500; text-transform:uppercase;
+    letter-spacing:.06em; font-size:10px; padding:6px 8px; border-bottom:1px solid var(--navy-line);
+  }
+  table.contrib td{ padding:8px; border-bottom:1px solid rgba(255,255,255,0.04); color:var(--ink-dim); }
+  table.contrib td.name{ color:var(--ink); font-family:var(--body); font-weight:500;}
+  table.contrib td.num{ text-align:right; }
+  .legend-tag{ color:#f0958c; font-size:10px; margin-left:6px;}
+
+  footer{
+    text-align:center;
+    margin-top:70px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-faint);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .liquid, .pool-bar-fill, .team-bar-fill{ transition:none; }
+    .coin{ animation:none; display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">THORE India · Quarterly Revenue Championship</div>
+  <h1 class="logo">MONEY³</h1>
+  <div class="tagline">One Target. One Mission. Unlimited Rewards.</div>
+</header>
+
+<div class="hero">
+  <div class="jar-wrap" id="jarWrap">
+    <div class="jar-neck"></div>
+    <div class="jar">
+      <div class="liquid" id="liquid"></div>
+      <div class="jar-glare"></div>
+    </div>
+    <div class="jar-readout">
+      <div class="jar-target-label">Company-Wide Target</div>
+      <div class="jar-target-val" id="jarTarget">₹0 Cr</div>
+      <div class="jar-achieved low" id="jarAchieved">₹0 Cr</div>
+      <div class="jar-pct" id="jarPct">0%</div>
+    </div>
+  </div>
+  <div class="hero-caption">Live across every city, every developer &nbsp;·&nbsp; updates as bookings land &nbsp;·&nbsp; last refresh <b id="lastRefresh">—</b></div>
+</div>
+
+<div class="ticker" id="tickerStrip"></div>
+
+<section id="poolsSection">
+  <div class="section-head">
+    <h2>Revenue Pools</h2>
+    <div class="sub">Tap a pool to see contributors</div>
+  </div>
+  <div class="pool-grid" id="poolGrid"></div>
+</section>
+
+<section id="teamSection">
+  <div class="section-head">
+    <h2>Team Tracker</h2>
+    <div class="sub">Grouped by Manager · Grand Prize needs &gt;75 Cr</div>
+  </div>
+  <div id="teamList"></div>
+</section>
+
+<section id="indivSection">
+  <div class="section-head">
+    <h2>Individual Tracker</h2>
+    <div class="sub">Tap a name for their pool-by-pool progress</div>
+  </div>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search by name…">
+  </div>
+  <div class="indiv-list" id="indivList"></div>
+</section>
+
+<footer>MONEY³ · Money Multiplier Marathon · THORE India</footer>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Pool</h3>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-sub" id="modalSub"></div>
+    <table class="contrib">
+      <thead>
+        <tr><th>Executive</th><th>Team</th><th class="num">Revenue</th><th class="num">Share</th><th class="num">Est. Reward</th></tr>
+      </thead>
+      <tbody id="modalBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   MONEY³ Dashboard — frontend
+   Replace API_URL with your deployed Apps Script /exec URL.
+   ========================================================= */
+const CONFIG = {
+  API_URL: 'https://script.google.com/macros/s/AKfycbyDjEcUeHeMI8TLyikZ563zMTvVEtWUxZoIBOiw9kSrn8cfgcDNs1Ea7fFKXFUtlOk_/exec',
+  REFRESH_MS: 30000
+};
+
+let lastCompanyAchievedCr = null;
+let poolsData = [];
+let individualsData = [];
+
+// ---------- JSONP fetch (matches existing THORE stack) ----------
+function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'money3cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+    const script = document.createElement('script');
+    const cleanup = () => { delete window[cbName]; script.remove(); };
+    window[cbName] = (data) => { cleanup(); resolve(data); };
+    script.onerror = () => { cleanup(); reject(new Error('Network error loading data')); };
+    const sep = url.indexOf('?') === -1 ? '?' : '&';
+    script.src = url + sep + 'callback=' + cbName + '&_=' + Date.now();
+    document.body.appendChild(script);
+    setTimeout(() => { if (window[cbName]) { cleanup(); reject(new Error('Timed out')); } }, 15000);
+  });
+}
+
+function fmtCr(cr) {
+  return '₹' + cr.toLocaleString('en-IN', { maximumFractionDigits: 2, minimumFractionDigits: 2 }) + ' Cr';
+}
+function fmtRs(rs) {
+  return '₹' + Math.round(rs).toLocaleString('en-IN');
+}
+function fmtPct(p) {
+  return p.toFixed(1) + '%';
+}
+
+// ---------- Money box ----------
+function renderMoneyBox(data) {
+  const pct = Math.max(0, Math.min(100, data.companyPercent || 0));
+  document.getElementById('liquid').style.height = pct + '%';
+  document.getElementById('jarTarget').textContent = fmtCr(data.companyTargetCr || 0) + ' target';
+  const achievedEl = document.getElementById('jarAchieved');
+  achievedEl.textContent = fmtCr(data.companyAchievedCr || 0);
+  achievedEl.classList.toggle('low', pct < 35);
+  document.getElementById('jarPct').textContent = fmtPct(data.companyPercent || 0) + ' achieved';
+
+  if (lastCompanyAchievedCr !== null && data.companyAchievedCr > lastCompanyAchievedCr) {
+    dropCoins(Math.min(14, Math.max(4, Math.round((data.companyAchievedCr - lastCompanyAchievedCr) * 2) + 4)));
+  }
+  lastCompanyAchievedCr = data.companyAchievedCr;
+}
+
+function dropCoins(count) {
+  const jar = document.getElementById('jarWrap');
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const coin = document.createElement('div');
+      coin.className = 'coin';
+      coin.textContent = '₹';
+      coin.style.left = (10 + Math.random() * 78) + '%';
+      const dur = 0.9 + Math.random() * 0.6;
+      coin.style.animationDuration = dur + 's';
+      jar.appendChild(coin);
+      setTimeout(() => coin.remove(), dur * 1000 + 50);
+    }, i * 90);
+  }
+}
+
+// ---------- Ticker (legendary + leading team) ----------
+function renderTicker(data) {
+  const el = document.getElementById('tickerStrip');
+  const badges = [];
+  const leadingTeam = data.teams.find(t => t.isLeadingTeam);
+  if (leadingTeam) {
+    badges.push(`<div class="badge gold"><span class="dot"></span>Leading team: ${escapeHtml(leadingTeam.manager)}'s squad — ${fmtCr(leadingTeam.revenueCr)}${leadingTeam.qualifiesGrandPrize ? ' · Grand Prize qualified 🏆' : ''}</div>`);
+  }
+  data.pools.forEach(p => {
+    if (p.legendaryWinner) {
+      badges.push(`<div class="badge gold"><span class="dot"></span>${escapeHtml(p.legendaryWinner.name)} soloed 50% of ${escapeHtml(p.developer)} (${p.region}) — iPhone 17 unlocked 📱</div>`);
+    }
+    if (p.achieved) {
+      badges.push(`<div class="badge"><span class="dot"></span>${escapeHtml(p.developer)} (${p.region}) target achieved ✓</div>`);
+    }
+  });
+  el.innerHTML = badges.length ? badges.join('') : `<div class="badge"><span class="dot"></span>Championship live — first pool win still to come</div>`;
+}
+
+// ---------- Pool grid ----------
+function renderPools(data) {
+  poolsData = data.pools;
+  const grid = document.getElementById('poolGrid');
+  grid.innerHTML = data.pools.map((p, idx) => {
+    const pct = Math.max(0, Math.min(100, p.percent));
+    return `
+      <div class="pool-card" data-idx="${idx}">
+        <div class="region">${escapeHtml(p.region)}</div>
+        <div class="dev">${escapeHtml(p.developer)}</div>
+        <div class="pool-bar-track"><div class="pool-bar-fill ${p.achieved ? 'done' : ''}" style="width:${pct}%"></div></div>
+        <div class="pool-nums">
+          <span>${fmtCr(p.achievedCr)}</span>
+          <span class="pct">${fmtPct(p.percent)}</span>
+          <span>of ${fmtCr(p.targetCr)}</span>
+        </div>
+        <div class="pool-flags">
+          ${p.achieved ? '<span class="flag done">Target hit</span>' : ''}
+          ${p.legendaryWinner ? '<span class="flag legend">50% Rule hit</span>' : ''}
+          ${!p.advanceEligible ? '<span class="flag">No advance payout</span>' : ''}
+        </div>
+      </div>`;
+  }).join('');
+  grid.querySelectorAll('.pool-card').forEach(card => {
+    card.addEventListener('click', () => openPoolModal(poolsData[Number(card.dataset.idx)]));
+  });
+}
+
+function openPoolModal(pool) {
+  document.getElementById('modalTitle').textContent = `${pool.developer} — ${pool.region}`;
+  document.getElementById('modalSub').textContent =
+    `Target ${fmtCr(pool.targetCr)} · Reward Pool ${fmtRs(pool.rewardPoolRs)} · Achieved ${fmtCr(pool.achievedCr)} (${fmtPct(pool.percent)})` +
+    (pool.achieved ? ' · Rewards unlocked' : ' · Rewards unlock once target is hit');
+  const body = document.getElementById('modalBody');
+  if (!pool.contributors.length) {
+    body.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--ink-faint);padding:20px;">No bookings logged in this pool yet.</td></tr>`;
+  } else {
+    body.innerHTML = pool.contributors.map(c => `
+      <tr>
+        <td class="name">${escapeHtml(c.name)}${c.legendary ? '<span class="legend-tag">50% RULE</span>' : ''}</td>
+        <td>${escapeHtml(c.manager || '—')}</td>
+        <td class="num">${fmtCr(c.revenueCr)}</td>
+        <td class="num">${fmtPct(c.contributionPct)}</td>
+        <td class="num">${pool.achieved ? fmtRs(c.rewardRs) : '—'}</td>
+      </tr>`).join('');
+  }
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalBackdrop').addEventListener('click', (e) => {
+  if (e.target.id === 'modalBackdrop') closeModal();
+});
+function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); }
+
+// ---------- Team tracker ----------
+function renderTeams(data) {
+  const el = document.getElementById('teamList');
+  if (!data.teams.length) {
+    el.innerHTML = '<div class="empty-note">No bookings logged yet.</div>';
+    return;
+  }
+  const maxRev = Math.max(...data.teams.map(t => t.revenueCr), 1);
+  el.innerHTML = data.teams.map((t, idx) => `
+    <div class="team-row" data-idx="${idx}">
+      <div class="top">
+        <div class="name">${escapeHtml(t.manager)}${t.isLeadingTeam ? ' 🏆' : ''}${t.qualifiesGrandPrize ? '<span class="flag" style="margin-left:6px;">Grand Prize</span>' : ''}</div>
+        <div class="rev">${fmtCr(t.revenueCr)}</div>
+      </div>
+      <div class="team-bar-track"><div class="team-bar-fill" style="width:${(t.revenueCr / maxRev * 100)}%"></div></div>
+      <div class="team-members" id="team-members-${idx}">
+        ${t.members.map(m => `<div class="member-line"><span>${escapeHtml(m.name)}</span><span>${fmtCr(m.revenueCr)}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+  el.querySelectorAll('.team-row').forEach(row => {
+    row.addEventListener('click', () => {
+      document.getElementById('team-members-' + row.dataset.idx).classList.toggle('open');
+    });
+  });
+}
+
+// ---------- Individual tracker ----------
+function renderIndividuals(data) {
+  individualsData = data.individuals;
+  drawIndividualList(individualsData);
+}
+
+function drawIndividualList(list) {
+  const el = document.getElementById('indivList');
+  if (!list.length) {
+    el.innerHTML = '<div class="empty-note">No employees found in Employee Master.</div>';
+    return;
+  }
+  el.innerHTML = list.map((p, idx) => `
+    <div class="indiv-row" data-idx="${idx}">
+      <div class="top">
+        <div>
+          <div class="name">${escapeHtml(p.name)}</div>
+          <div class="meta">${escapeHtml(p.manager || '—')} · ${escapeHtml(p.cluster || '—')}</div>
+        </div>
+        <div class="rev">${fmtCr(p.totalRevenueCr)}</div>
+      </div>
+      <div class="indiv-detail" id="indiv-detail-${idx}">
+        ${p.pools.length ? p.pools.map(pp => `
+          <div class="indiv-pool-line">
+            <span class="p-name">${escapeHtml(pp.developer)} (${escapeHtml(pp.region)})</span>
+            <span>${fmtCr(pp.revenueCr)} · ${fmtPct(pp.contributionPct)} share${pp.legendary ? ' · 50% RULE' : ''}</span>
+          </div>`).join('') : '<div class="indiv-pool-line"><span class="p-name">No contributions logged yet</span><span></span></div>'}
+      </div>
+    </div>`).join('');
+  el.querySelectorAll('.indiv-row').forEach(row => {
+    row.addEventListener('click', () => {
+      document.getElementById('indiv-detail-' + row.dataset.idx).classList.toggle('open');
+    });
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  const filtered = q ? individualsData.filter(p => p.name.toLowerCase().includes(q)) : individualsData;
+  drawIndividualList(filtered);
+});
+
+// ---------- utils ----------
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ---------- load loop ----------
+async function refresh() {
+  try {
+    const data = await jsonp(CONFIG.API_URL);
+    if (data.error) throw new Error(data.error);
+    renderMoneyBox(data);
+    renderTicker(data);
+    renderPools(data);
+    renderTeams(data);
+    renderIndividuals(data);
+    document.getElementById('lastRefresh').textContent = new Date().toLocaleTimeString('en-IN');
+  } catch (err) {
+    document.getElementById('lastRefresh').textContent = 'error — ' + err.message;
+    console.error(err);
+  }
+}
+
+refresh();
+setInterval(refresh, CONFIG.REFRESH_MS);
+</script>
+
+</body>
+</html>
