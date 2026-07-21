@@ -752,19 +752,19 @@
   }
 
   function renderPools(data){
-    poolsData = data.pools;
+    poolsData = data.pools || [];
     const grid = document.getElementById('poolGrid');
-    grid.innerHTML = data.pools.map((p, idx) => {
-      const pct = Math.max(0, Math.min(100, p.percent));
+    grid.innerHTML = poolsData.map((p, idx) => {
+      const pct = Math.max(0, Math.min(100, p.percent || 0));
       return `
         <div class="pool-card" data-idx="${idx}">
           <div class="region">${escapeHtml(p.region)}</div>
           <div class="dev">${escapeHtml(p.developer)}</div>
           <div class="pool-bar-track"><div class="pool-bar-fill ${p.achieved ? 'done' : ''}" style="width:${pct}%"></div></div>
           <div class="pool-nums">
-            <span>${fmtCr(p.achievedCr)}</span>
-            <span class="pct">${fmtPct(p.percent)}</span>
-            <span>of ${fmtCr(p.targetCr)}</span>
+            <span>${fmtCr(p.achievedCr || 0)}</span>
+            <span class="pct">${fmtPct(p.percent || 0)}</span>
+            <span>of ${fmtCr(p.targetCr || 0)}</span>
           </div>
           <div class="pool-flags">
             ${p.achieved ? '<span class="flag done">Target hit</span>' : ''}
@@ -781,19 +781,20 @@
   function openPoolModal(pool){
     document.getElementById('modalTitle').textContent = `${pool.developer} — ${pool.region}`;
     document.getElementById('modalSub').textContent =
-      `Target ${fmtCr(pool.targetCr)} · Reward Pool ${fmtRs(pool.rewardPoolRs)} · Achieved ${fmtCr(pool.achievedCr)} (${fmtPct(pool.percent)})` +
+      `Target ${fmtCr(pool.targetCr || 0)} · Reward Pool ${fmtRs(pool.rewardPoolRs || 0)} · Achieved ${fmtCr(pool.achievedCr || 0)} (${fmtPct(pool.percent || 0)})` +
       (pool.achieved ? ' · Rewards unlocked' : ' · Rewards unlock once target is hit');
     const body = document.getElementById('modalBody');
-    if (!pool.contributors.length) {
+    const contributors = pool.contributors || [];
+    if (!contributors.length) {
       body.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--ink-faint);padding:20px;">No bookings logged in this pool yet.</td></tr>`;
     } else {
-      body.innerHTML = pool.contributors.map(c => `
+      body.innerHTML = contributors.map(c => `
         <tr>
           <td class="name">${escapeHtml(c.name)}${c.legendary ? '<span class="legend-tag">50% RULE</span>' : ''}</td>
           <td>${escapeHtml(c.manager || '—')}</td>
-          <td class="num">${fmtCr(c.revenueCr)}</td>
-          <td class="num">${fmtPct(c.contributionPct)}</td>
-          <td class="num">${pool.achieved ? fmtRs(c.rewardRs) : '—'}</td>
+          <td class="num">${fmtCr(c.revenueCr || 0)}</td>
+          <td class="num">${fmtPct(c.contributionPct || 0)}</td>
+          <td class="num">${pool.achieved ? fmtRs(c.rewardRs || 0) : '—'}</td>
         </tr>`).join('');
     }
     document.getElementById('modalBackdrop').classList.add('open');
@@ -804,72 +805,87 @@
 
   function renderTeams(data){
     const el = document.getElementById('teamList');
-    if (!data.teams.length) { el.innerHTML = '<div class="empty-note">No bookings logged yet.</div>'; return; }
-    const maxRev = Math.max(...data.teams.map(t => t.revenueCr), 1);
-    el.innerHTML = data.teams.map((t, idx) => `
+    const teams = data.teams || [];
+    if (!teams.length) { el.innerHTML = '<div class="empty-note">No bookings logged yet.</div>'; return; }
+    const maxRev = Math.max(...teams.map(t => t.revenueCr || 0), 1);
+    el.innerHTML = teams.map((t, idx) => {
+      const members = t.members || [];
+      return `
       <div class="team-row" data-idx="${idx}">
         <div class="top">
           <div class="name">${escapeHtml(t.manager)}${t.isLeadingTeam ? ' 🏆' : ''}${t.qualifiesGrandPrize ? '<span class="flag" style="margin-left:6px;">Grand Prize</span>' : ''}</div>
-          <div class="rev">${fmtCr(t.revenueCr)}</div>
+          <div class="rev">${fmtCr(t.revenueCr || 0)}</div>
         </div>
-        <div class="team-bar-track"><div class="team-bar-fill" style="width:${(t.revenueCr / maxRev * 100)}%"></div></div>
+        <div class="team-bar-track"><div class="team-bar-fill" style="width:${((t.revenueCr || 0) / maxRev * 100)}%"></div></div>
         <div class="team-members" id="team-members-${idx}">
-          ${t.members.map(m => `<div class="member-line"><span>${escapeHtml(m.name)}</span><span>${fmtCr(m.revenueCr)}</span></div>`).join('')}
+          ${members.map(m => `<div class="member-line"><span>${escapeHtml(m.name)}</span><span>${fmtCr(m.revenueCr)}</span></div>`).join('')}
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
     el.querySelectorAll('.team-row').forEach(row => {
       row.addEventListener('click', () => { document.getElementById('team-members-' + row.dataset.idx).classList.toggle('open'); });
     });
   }
 
   function renderIndividuals(data){
-    individualsData = data.individuals;
+    individualsData = data.individuals || [];
     drawIndividualList(individualsData);
   }
   function drawIndividualList(list){
     const el = document.getElementById('indivList');
-    if (!list.length) { el.innerHTML = '<div class="empty-note">No employees found in Employee Master.</div>'; return; }
-    el.innerHTML = list.map((p, idx) => `
+    if (!list || !list.length) { el.innerHTML = '<div class="empty-note">No employees found in Employee Master.</div>'; return; }
+    el.innerHTML = list.map((p, idx) => {
+      const pools = p.pools || [];
+      return `
       <div class="indiv-row" data-idx="${idx}">
         <div class="top">
           <div>
             <div class="name">${escapeHtml(p.name)}</div>
             <div class="meta">${escapeHtml(p.manager || '—')} · ${escapeHtml(p.cluster || '—')}</div>
           </div>
-          <div class="rev">${fmtCr(p.totalRevenueCr)}</div>
+          <div class="rev">${fmtCr(p.totalRevenueCr || 0)}</div>
         </div>
         <div class="indiv-detail" id="indiv-detail-${idx}">
-          ${p.pools.length ? p.pools.map(pp => `
+          ${pools.length ? pools.map(pp => `
             <div class="indiv-pool-line">
               <span class="p-name">${escapeHtml(pp.developer)} (${escapeHtml(pp.region)})</span>
               <span>${fmtCr(pp.revenueCr)} · ${fmtPct(pp.contributionPct)} share${pp.legendary ? ' · 50% RULE' : ''}</span>
             </div>`).join('') : '<div class="indiv-pool-line"><span class="p-name">No contributions logged yet</span><span></span></div>'}
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
     el.querySelectorAll('.indiv-row').forEach(row => {
       row.addEventListener('click', () => { document.getElementById('indiv-detail-' + row.dataset.idx).classList.toggle('open'); });
     });
   }
   document.getElementById('searchInput').addEventListener('input', (e) => {
     const q = e.target.value.trim().toLowerCase();
-    const filtered = q ? individualsData.filter(p => p.name.toLowerCase().includes(q)) : individualsData;
+    const filtered = q ? individualsData.filter(p => (p.name || '').toLowerCase().includes(q)) : individualsData;
     drawIndividualList(filtered);
   });
 
   async function refresh(){
+    let data;
     try {
-      const data = await jsonp(CONFIG.API_URL);
+      data = await jsonp(CONFIG.API_URL);
       if (data.error) throw new Error(data.error);
-      renderMoneyBox(data);
-      renderTicker(data);
-      renderPools(data);
-      renderTeams(data);
-      renderIndividuals(data);
-      document.getElementById('lastRefresh').textContent = new Date().toLocaleTimeString('en-IN');
     } catch (err) {
       document.getElementById('lastRefresh').textContent = 'error — ' + err.message;
-      console.error(err);
+      console.error('MONEY³ fetch failed:', err);
+      return;
     }
+    const steps = [
+      ['money box', () => renderMoneyBox(data)],
+      ['ticker', () => renderTicker(data)],
+      ['pools', () => renderPools(data)],
+      ['teams', () => renderTeams(data)],
+      ['individuals', () => renderIndividuals(data)]
+    ];
+    let failed = [];
+    steps.forEach(([label, fn]) => {
+      try { fn(); } catch (err) { failed.push(label); console.error(`MONEY³ render failed [${label}]:`, err); }
+    });
+    document.getElementById('lastRefresh').textContent = new Date().toLocaleTimeString('en-IN') + (failed.length ? ` (issue: ${failed.join(', ')})` : '');
   }
   refresh();
   setInterval(refresh, CONFIG.REFRESH_MS);
