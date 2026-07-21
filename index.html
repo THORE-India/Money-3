@@ -302,9 +302,7 @@
   .team-row{ background:var(--navy-panel); border:1px solid var(--navy-line); border-radius:12px; padding:14px 18px; margin-bottom:10px; cursor:pointer; }
   .team-row .top{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
   .team-row .name{ font-family:var(--display); font-weight:650; font-size:16px; display:flex; align-items:center; gap:8px; }
-  .team-row .rev{ font-family:var(--mono); font-size:14px; color:var(--gold-bright); }
-  .team-bar-track{ margin-top:10px; height:6px; border-radius:6px; background:rgba(255,255,255,0.06); }
-  .team-bar-fill{ height:100%; border-radius:6px; background:linear-gradient(90deg, var(--gold), var(--gold-bright)); transition:width 1s ease; }
+  .team-row .rank-badge{ font-family:var(--mono); font-size:13px; color:var(--gold-bright); background:rgba(232,184,75,0.12); border:1px solid var(--gold-dim); border-radius:20px; padding:4px 12px; }
   .team-members{ display:none; margin-top:12px; padding-top:12px; border-top:1px dashed var(--navy-line); }
   .team-members.open{ display:block; }
   .member-line{ display:flex; justify-content:space-between; font-family:var(--mono); font-size:12px; color:var(--ink-dim); padding:4px 0; }
@@ -319,7 +317,7 @@
   .indiv-row .top{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
   .indiv-row .name{ font-family:var(--body); font-weight:600; font-size:14px; }
   .indiv-row .meta{ font-family:var(--mono); font-size:10px; color:var(--ink-faint); margin-top:2px; }
-  .indiv-row .rev{ font-family:var(--mono); font-size:13px; color:var(--gold-bright); }
+  .indiv-row .rank-badge{ font-family:var(--mono); font-size:12px; color:var(--gold-bright); background:rgba(232,184,75,0.12); border:1px solid var(--gold-dim); border-radius:20px; padding:3px 11px; }
   .indiv-detail{ display:none; margin-top:12px; padding-top:12px; border-top:1px dashed var(--navy-line); }
   .indiv-detail.open{ display:block; }
   .indiv-pool-line{ display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; color:var(--ink-dim); padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
@@ -465,9 +463,8 @@
         </div>
         <div class="jar-readout">
           <div class="jar-label">Company-Wide Target</div>
-          <div class="jar-label" id="jarTarget" style="margin-top:2px;font-style:italic;color:rgba(255,255,255,0.65);">₹0 Cr target</div>
-          <div class="jar-val" id="jarVal">₹0 Cr</div>
-          <div class="jar-pct" id="jarPct">0%</div>
+          <div class="jar-val" id="jarVal">0%</div>
+          <div class="jar-pct" id="jarPct">achieved</div>
         </div>
       </div>
     </div>
@@ -477,7 +474,7 @@
     <div class="reveal">
       <div class="section-label">Live Now</div>
       <h2 class="section-title">The dashboard, right here.</h2>
-      <div class="dash-status"><span class="live-dot"></span> Connected to the THORE MONEY³ sheet · last refresh <b id="lastRefresh">—</b> · updates every 30s</div>
+      <div class="dash-status"><span class="live-dot"></span> Connected to the THORE MONEY³ · last refresh <b id="lastRefresh">—</b></div>
     </div>
     <div class="ticker reveal" id="tickerStrip"></div>
 
@@ -489,13 +486,13 @@
 
     <div class="dash-subhead reveal">
       <h3>Team Tracker</h3>
-      <div class="sub">Grouped by Manager · Grand Prize needs &gt;75 Cr</div>
+      <div class="sub">Ranked by Manager · Grand Prize qualifiers highlighted</div>
     </div>
     <div class="reveal" id="teamList"></div>
 
     <div class="dash-subhead reveal">
       <h3>Individual Tracker</h3>
-      <div class="sub">Search a name for their pool-by-pool progress</div>
+      <div class="sub">Search a name for their pool-by-pool ranking</div>
     </div>
     <div class="reveal">
       <input type="text" id="searchInput" placeholder="Search by name…">
@@ -512,7 +509,7 @@
       <div class="modal-sub" id="modalSub"></div>
       <table class="contrib">
         <thead>
-          <tr><th>Executive</th><th>Team</th><th class="num">Revenue</th><th class="num">Share</th><th class="num">Est. Reward</th></tr>
+          <tr><th>Rank</th><th>Executive</th><th>Team</th><th class="num">Reward Status</th></tr>
         </thead>
         <tbody id="modalBody"></tbody>
       </table>
@@ -534,12 +531,12 @@
       <div class="flow-card reveal d1">
         <div class="flow-mark">Team</div>
         <h3>Rolled up by Manager</h3>
-        <p>Individual contributions roll up into team totals, so every Manager can see exactly where their squad stands against the Grand Prize line.</p>
+        <p>Individual contributions roll up into team totals, so every Manager can see exactly where their squad ranks against the Grand Prize line.</p>
       </div>
       <div class="flow-card reveal d2">
         <div class="flow-mark">You</div>
         <h3>Your own tracker</h3>
-        <p>Search your name to see your share of every pool you've contributed to — and how close you are to a legendary solo run.</p>
+        <p>Search your name to see your rank in every pool you've contributed to — and how close you are to a legendary solo run.</p>
       </div>
     </div>
   </section>
@@ -554,7 +551,7 @@
       <div class="reward-card gold reveal">
         <div class="reward-tag">Pool Level</div>
         <h3>Target Hit Bonus</h3>
-        <p>The moment a region-developer pool crosses 100%, its reward pool splits across every contributor by revenue share.</p>
+        <p>The moment a region-developer pool crosses 100%, its reward pool splits across every contributor by rank.</p>
       </div>
       <div class="reward-card rose reveal d1">
         <div class="reward-tag">Individual · Rare</div>
@@ -564,7 +561,7 @@
       <div class="reward-card emerald reveal d2">
         <div class="reward-tag">Team Level</div>
         <h3>Grand Prize</h3>
-        <p>Any Manager's team that crosses ₹75 Cr in combined revenue for the quarter qualifies for the company-wide Grand Prize.</p>
+        <p>Any Manager's team that qualifies against the quarterly threshold earns the company-wide Grand Prize.</p>
       </div>
     </div>
   </section>
@@ -588,7 +585,7 @@
       <div class="t-item">
         <div class="t-date">Final week</div>
         <h4>Grand Prize line drawn</h4>
-        <p>Teams push for the ₹75 Cr line as the leaderboard locks in for the quarter.</p>
+        <p>Teams push for the Grand Prize line as the leaderboard locks in for the quarter.</p>
       </div>
       <div class="t-item">
         <div class="t-date">Quarter close</div>
@@ -675,13 +672,19 @@
   /* =========================================================
      LIVE CONNECTION — same Apps Script backend as the MONEY³
      dashboard. Replace CONFIG.API_URL if this ever moves.
+
+     NOTE ON DATA PRIVACY: the backend response still contains
+     revenue figures (Cr amounts, reward Rs amounts) because that
+     is how targets/rewards are calculated. This frontend
+     deliberately never reads or renders any of those absolute
+     values — only percentages and rankings computed client-side.
      ========================================================= */
   const CONFIG = {
     API_URL: 'https://script.google.com/macros/s/AKfycbyDjEcUeHeMI8TLyikZ563zMTvVEtWUxZoIBOiw9kSrn8cfgcDNs1Ea7fFKXFUtlOk_/exec',
     REFRESH_MS: 30000
   };
 
-  let lastCompanyAchievedCr = null;
+  let lastCompanyPercent = null;
   let poolsData = [];
   let individualsData = [];
 
@@ -699,14 +702,12 @@
     });
   }
 
-  function fmtCr(cr){ return '₹' + Number(cr).toLocaleString('en-IN', { maximumFractionDigits: 2, minimumFractionDigits: 2 }) + ' Cr'; }
-  function fmtRs(rs){ return '₹' + Math.round(rs).toLocaleString('en-IN'); }
   function fmtPct(p){ return Number(p).toFixed(1) + '%'; }
+  function ordinal(n){ const s=['th','st','nd','rd'], v=n%100; return n + (s[(v-20)%10] || s[v] || s[0]); }
   function escapeHtml(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   const liquid = document.getElementById('liquid');
   const jarVal = document.getElementById('jarVal');
-  const jarTarget = document.getElementById('jarTarget');
   const jarPct = document.getElementById('jarPct');
 
   function dropCoin(){
@@ -722,15 +723,14 @@
   function renderMoneyBox(data){
     const pct = Math.max(0, Math.min(100, data.companyPercent || 0));
     liquid.style.height = pct + '%';
-    jarTarget.textContent = fmtCr(data.companyTargetCr || 0) + ' target';
-    jarVal.textContent = fmtCr(data.companyAchievedCr || 0);
-    jarPct.textContent = fmtPct(data.companyPercent || 0) + ' achieved';
+    jarVal.textContent = fmtPct(pct);
+    jarPct.textContent = 'of target achieved';
 
-    if (lastCompanyAchievedCr !== null && data.companyAchievedCr > lastCompanyAchievedCr) {
-      const n = Math.min(14, Math.max(4, Math.round((data.companyAchievedCr - lastCompanyAchievedCr) * 2) + 4));
+    if (lastCompanyPercent !== null && pct > lastCompanyPercent) {
+      const n = Math.min(14, Math.max(4, Math.round((pct - lastCompanyPercent) * 2) + 4));
       for(let i=0;i<n;i++) setTimeout(dropCoin, i*90);
     }
-    lastCompanyAchievedCr = data.companyAchievedCr;
+    lastCompanyPercent = pct;
   }
 
   function renderTicker(data){
@@ -738,7 +738,7 @@
     const badges = [];
     const leadingTeam = data.teams.find(t => t.isLeadingTeam);
     if (leadingTeam) {
-      badges.push(`<div class="badge gold"><span class="dot"></span>Leading team: ${escapeHtml(leadingTeam.manager)}'s squad — ${fmtCr(leadingTeam.revenueCr)}${leadingTeam.qualifiesGrandPrize ? ' · Grand Prize qualified 🏆' : ''}</div>`);
+      badges.push(`<div class="badge gold"><span class="dot"></span>Leading team: ${escapeHtml(leadingTeam.manager)}'s squad${leadingTeam.qualifiesGrandPrize ? ' · Grand Prize qualified 🏆' : ''}</div>`);
     }
     data.pools.forEach(p => {
       if (p.legendaryWinner) {
@@ -762,9 +762,7 @@
           <div class="dev">${escapeHtml(p.developer)}</div>
           <div class="pool-bar-track"><div class="pool-bar-fill ${p.achieved ? 'done' : ''}" style="width:${pct}%"></div></div>
           <div class="pool-nums">
-            <span>${fmtCr(p.achievedCr || 0)}</span>
-            <span class="pct">${fmtPct(p.percent || 0)}</span>
-            <span>of ${fmtCr(p.targetCr || 0)}</span>
+            <span class="pct">${fmtPct(p.percent || 0)} achieved</span>
           </div>
           <div class="pool-flags">
             ${p.achieved ? '<span class="flag done">Target hit</span>' : ''}
@@ -781,20 +779,22 @@
   function openPoolModal(pool){
     document.getElementById('modalTitle').textContent = `${pool.developer} — ${pool.region}`;
     document.getElementById('modalSub').textContent =
-      `Target ${fmtCr(pool.targetCr || 0)} · Reward Pool ${fmtRs(pool.rewardPoolRs || 0)} · Achieved ${fmtCr(pool.achievedCr || 0)} (${fmtPct(pool.percent || 0)})` +
+      `${fmtPct(pool.percent || 0)} of target achieved` +
       (pool.achieved ? ' · Rewards unlocked' : ' · Rewards unlock once target is hit');
     const body = document.getElementById('modalBody');
-    const contributors = pool.contributors || [];
+    // Rank contributors by their share of the pool, without exposing any revenue or reward amount.
+    const contributors = (pool.contributors || [])
+      .slice()
+      .sort((a, b) => (b.contributionPct || 0) - (a.contributionPct || 0));
     if (!contributors.length) {
-      body.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--ink-faint);padding:20px;">No bookings logged in this pool yet.</td></tr>`;
+      body.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--ink-faint);padding:20px;">No bookings logged in this pool yet.</td></tr>`;
     } else {
-      body.innerHTML = contributors.map(c => `
+      body.innerHTML = contributors.map((c, i) => `
         <tr>
+          <td>${ordinal(i + 1)}</td>
           <td class="name">${escapeHtml(c.name)}${c.legendary ? '<span class="legend-tag">50% RULE</span>' : ''}</td>
           <td>${escapeHtml(c.manager || '—')}</td>
-          <td class="num">${fmtCr(c.revenueCr || 0)}</td>
-          <td class="num">${fmtPct(c.contributionPct || 0)}</td>
-          <td class="num">${pool.achieved ? fmtRs(c.rewardRs || 0) : '—'}</td>
+          <td class="num">${pool.achieved ? 'Unlocked' : 'Pending'}</td>
         </tr>`).join('');
     }
     document.getElementById('modalBackdrop').classList.add('open');
@@ -805,20 +805,20 @@
 
   function renderTeams(data){
     const el = document.getElementById('teamList');
-    const teams = data.teams || [];
+    // Rank teams client-side by revenue; only the rank is ever rendered.
+    const teams = (data.teams || []).slice().sort((a, b) => (b.revenueCr || 0) - (a.revenueCr || 0));
     if (!teams.length) { el.innerHTML = '<div class="empty-note">No bookings logged yet.</div>'; return; }
-    const maxRev = Math.max(...teams.map(t => t.revenueCr || 0), 1);
     el.innerHTML = teams.map((t, idx) => {
-      const members = t.members || [];
+      // Rank members within the team by revenue, without showing the revenue itself.
+      const members = (t.members || []).slice().sort((a, b) => (b.revenueCr || 0) - (a.revenueCr || 0));
       return `
       <div class="team-row" data-idx="${idx}">
         <div class="top">
           <div class="name">${escapeHtml(t.manager)}${t.isLeadingTeam ? ' 🏆' : ''}${t.qualifiesGrandPrize ? '<span class="flag" style="margin-left:6px;">Grand Prize</span>' : ''}</div>
-          <div class="rev">${fmtCr(t.revenueCr || 0)}</div>
+          <div class="rank-badge">${ordinal(idx + 1)}</div>
         </div>
-        <div class="team-bar-track"><div class="team-bar-fill" style="width:${((t.revenueCr || 0) / maxRev * 100)}%"></div></div>
         <div class="team-members" id="team-members-${idx}">
-          ${members.map(m => `<div class="member-line"><span>${escapeHtml(m.name)}</span><span>${fmtCr(m.revenueCr)}</span></div>`).join('')}
+          ${members.map((m, mi) => `<div class="member-line"><span>${escapeHtml(m.name)}</span><span>${ordinal(mi + 1)}</span></div>`).join('')}
         </div>
       </div>`;
     }).join('');
@@ -828,14 +828,16 @@
   }
 
   function renderIndividuals(data){
-    individualsData = data.individuals || [];
+    // Rank individuals client-side by total revenue; only the rank is ever rendered.
+    individualsData = (data.individuals || []).slice().sort((a, b) => (b.totalRevenueCr || 0) - (a.totalRevenueCr || 0));
     drawIndividualList(individualsData);
   }
   function drawIndividualList(list){
     const el = document.getElementById('indivList');
     if (!list || !list.length) { el.innerHTML = '<div class="empty-note">No employees found in Employee Master.</div>'; return; }
     el.innerHTML = list.map((p, idx) => {
-      const pools = p.pools || [];
+      // Rank each pool's contributors by share, without showing revenue amounts.
+      const pools = (p.pools || []).slice().sort((a, b) => (b.contributionPct || 0) - (a.contributionPct || 0));
       return `
       <div class="indiv-row" data-idx="${idx}">
         <div class="top">
@@ -843,13 +845,13 @@
             <div class="name">${escapeHtml(p.name)}</div>
             <div class="meta">${escapeHtml(p.manager || '—')} · ${escapeHtml(p.cluster || '—')}</div>
           </div>
-          <div class="rev">${fmtCr(p.totalRevenueCr || 0)}</div>
+          <div class="rank-badge">${ordinal(idx + 1)}</div>
         </div>
         <div class="indiv-detail" id="indiv-detail-${idx}">
-          ${pools.length ? pools.map(pp => `
+          ${pools.length ? pools.map((pp, pi) => `
             <div class="indiv-pool-line">
               <span class="p-name">${escapeHtml(pp.developer)} (${escapeHtml(pp.region)})</span>
-              <span>${fmtCr(pp.revenueCr)} · ${fmtPct(pp.contributionPct)} share${pp.legendary ? ' · 50% RULE' : ''}</span>
+              <span>${ordinal(pi + 1)} in pool${pp.legendary ? ' · 50% RULE' : ''}</span>
             </div>`).join('') : '<div class="indiv-pool-line"><span class="p-name">No contributions logged yet</span><span></span></div>'}
         </div>
       </div>`;
